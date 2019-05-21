@@ -30,25 +30,30 @@ class SocialGraph:
         self.users[self.lastID] = User(name)
         self.friendships[self.lastID] = set()
 
+
+    ## added
     def populateGraph(self, numUsers, avgFriendships):
-        """
-        Takes a number of users and an average number of friendships
-        as arguments
-
-        Creates that number of users and a randomly distributed friendships
-        between those users.
-
-        The number of users must be greater than the average number of friendships.
-        """
         # Reset graph
-        self.lastID = 0
+        self.lastId = 0
         self.users = {}
         self.friendships = {}
-        # !!!! IMPLEMENT ME
 
-        # Add users
-
-        # Create friendships
+        # Add Users
+        for i in range (0, numUsers):
+            self.addUser(f"User {i}")
+        # Create Friendships
+        # Generate all possible friendship combinations
+        possibleFriendships = []
+        for userID in self.users:
+            for friendID in range(userID + 1, self.lastID + 1):
+                possibleFriendships.append((userID, friendID))
+        # Shuffle the possible frienships
+        random.shuffle(possibleFriendships)
+        # Create friendships for the first X pairs of the list
+        # X is determined by the formula: numUsers * avgFriendships // 2
+        for i in range(numUsers * avgFriendships //2):
+            friendship = possibleFriendships[i]
+            self.addFriendship(friendship[0], friendship[1])
 
     def getAllSocialPaths(self, userID):
         """
